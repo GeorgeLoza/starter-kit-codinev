@@ -56,4 +56,24 @@ final class ApiResponse
     ): JsonResponse {
         return self::error($message, null, 404);
     }
+
+    public static function paginated(
+        \Illuminate\Contracts\Pagination\LengthAwarePaginator $paginator,
+        string $message = 'Recursos obtenidos',
+        ?callable $transformer = null
+    ): JsonResponse {
+        $items = $transformer
+            ? collect($paginator->items())->map($transformer)->values()
+            : $paginator->items();
+
+        return self::success([
+            'items' => $items,
+            'meta'  => [
+                'current_page' => $paginator->currentPage(),
+                'per_page'     => $paginator->perPage(),
+                'total'        => $paginator->total(),
+                'last_page'    => $paginator->lastPage(),
+            ],
+        ], $message);
+    }
 }

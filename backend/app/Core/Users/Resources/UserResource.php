@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Auth\Resources;
+namespace App\Core\Users\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,6 +19,11 @@ final class UserResource extends JsonResource
             'name'              => $this->name,
             'email'             => $this->email,
             'email_verified_at' => $this->email_verified_at?->toIso8601String(),
+            'roles'             => $this->whenLoaded('roles', fn () => $this->roles->pluck('name')),
+            'permissions'       => $this->when(
+                $this->relationLoaded('roles'),
+                fn () => $this->getAllPermissions()->pluck('name')
+            ),
             'created_at'        => $this->created_at?->toIso8601String(),
             'updated_at'        => $this->updated_at?->toIso8601String(),
         ];

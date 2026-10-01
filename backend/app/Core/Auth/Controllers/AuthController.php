@@ -6,7 +6,7 @@ namespace App\Core\Auth\Controllers;
 
 use App\Core\Auth\Actions\LoginAction;
 use App\Core\Auth\Requests\LoginRequest;
-use App\Core\Auth\Resources\UserResource;
+use App\Core\Users\Resources\UserResource;
 use App\Core\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,8 +29,10 @@ final class AuthController
 
     public function me(Request $request): JsonResponse
     {
+        $user = $request->user()->load('roles');
+
         return ApiResponse::success(
-            new UserResource($request->user()),
+            new UserResource($user),
             'Usuario autenticado'
         );
     }
