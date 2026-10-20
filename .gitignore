@@ -3,16 +3,22 @@
 node_modules/
 vendor/
 
-# Entorno
+# Variables de entorno y secretos
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+!.env.*.example
 
-# Builds
+# Composer
+backend/auth.json
+
+# Builds y archivos generados
 dist/
 build/
 .expo/
 web-build/
+coverage/
+*.tsbuildinfo
 
 # Logs
 *.log
@@ -21,15 +27,25 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Sistema
+# Sistema y editores
 .DS_Store
 Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 
 # Laravel
-backend/storage/*.key
-backend/storage/logs/*
-backend/storage/framework/cache/*
-backend/storage/framework/sessions/*
-backend/storage/framework/views/*
-backend/bootstrap/cache/*
-'@ | Set-Content -Path .gitignore
+/backend/storage/*.key
+/backend/storage/logs/*
+/backend/storage/framework/cache/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/views/*
+/backend/bootstrap/cache/*
+/backend/public/build
+/backend/public/hot
+/backend/public/storage
+
+# Expo
+/mobile/.expo/
+'@ | Set-Content -Path .gitignore -Encoding utf8
