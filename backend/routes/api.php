@@ -7,6 +7,7 @@ use App\Core\Authorization\Controllers\PermissionController;
 use App\Core\Authorization\Controllers\RoleController;
 use App\Core\Http\Controllers\HealthController;
 use App\Core\Users\Controllers\UserController;
+use App\Core\Audit\Controllers\AuditLogController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', HealthController::class)->name('api.health');
@@ -52,4 +53,12 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:roles.update')->name('api.users.roles.assign');
     Route::delete('/users/{user}/roles/{role}', [RoleController::class, 'removeFromUser'])
         ->middleware('permission:roles.update')->name('api.users.roles.remove');
+
+
+
+
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])
+        ->middleware('permission:audit.view')->name('api.audit-logs.index');
+    Route::get('/audit-logs/{auditLog}', [AuditLogController::class, 'show'])
+        ->middleware('permission:audit.view')->name('api.audit-logs.show');
 });

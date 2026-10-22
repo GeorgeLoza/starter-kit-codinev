@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Audit\Traits\Auditable;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -16,13 +17,12 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+    use Auditable, HasApiTokens, HasFactory, HasRoles, Notifiable;
 
-    /**
-     * Guard por defecto para roles y permisos.
-     * Necesario para que Spatie use el guard de Sanctum en APIs.
-     */
     protected string $guard_name = 'sanctum';
+
+    /** Campos que NO se auditan */
+    protected array $auditExclude = ['password', 'remember_token'];
 
     protected function casts(): array
     {
